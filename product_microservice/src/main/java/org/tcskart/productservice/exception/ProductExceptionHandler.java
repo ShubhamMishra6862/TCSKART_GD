@@ -32,11 +32,8 @@ public class ProductExceptionHandler {
 	    public ResponseEntity<String> handleDuplicateProduct(DuplicateProductException ex) {
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
 	    }
-	    
-	    
-	    @ExceptionHandler(InvalidImageFormatException.class)
-	    public ResponseEntity<String> handleImageFormat(InvalidImageFormatException  ex) {
-	        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+	    @ExceptionHandler(FailedOperationException.class)
+	    public ResponseEntity<String> handleDuplicateProduct(FailedOperationException ex) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
 	    }
-	    
 }

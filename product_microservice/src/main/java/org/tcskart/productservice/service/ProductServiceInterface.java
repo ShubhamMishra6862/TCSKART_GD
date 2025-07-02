@@ -11,5 +11,4 @@ public interface ProductServiceInterface {
     List<ProductResponseDTO> getAllProducts(int page, int size, String category, String search);
     ProductResponseDTO getProductById(Long id);
     List<ProductResponseDTO> getAllProducts();
-    ProductResponseDTO updateProduct(Long id, ProductRequestDTO requestDTO);
 }

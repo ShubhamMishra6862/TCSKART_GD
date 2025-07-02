@@ -18,7 +18,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.POST,"/api/v1.0/products").hasRole("ADMIN") // POST (if you split GET/POST)
-                        .requestMatchers(HttpMethod.PUT,"/api/v1.0/products/update/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1.0/products/**").permitAll()   // All users can view
                         .requestMatchers("/auth/token").permitAll() 
                         .anyRequest().authenticated()) .addFilterBefore(new JwtAuthenticationFilter(), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)

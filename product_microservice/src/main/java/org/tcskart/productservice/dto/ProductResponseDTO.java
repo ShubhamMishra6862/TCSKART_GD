@@ -1,7 +1,6 @@
 package org.tcskart.productservice.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +18,5 @@ public class ProductResponseDTO {
     private BigDecimal price;
     private Integer quantity;
     private String category;
-    private List<String> imageUrls;;
+    private String imageUrl;
 }

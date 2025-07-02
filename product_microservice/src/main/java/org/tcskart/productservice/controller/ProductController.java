@@ -8,29 +8,22 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.tcskart.productservice.bean.Product;
-import org.tcskart.productservice.dto.OrderProduct;
-import org.tcskart.productservice.dto.ProductQuantity;
 import org.tcskart.productservice.dto.ProductRequestDTO;
 import org.tcskart.productservice.dto.ProductResponseDTO;
-import org.tcskart.productservice.dto.ReviewRequestDTO;
-import org.tcskart.productservice.dto.ReviewResponseDTO;
 import org.tcskart.productservice.service.ProductService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1.0")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
-    
 
     // Add product (Admin)
     @PreAuthorize("hasRole('ADMIN')")
@@ -54,45 +47,14 @@ public class ProductController {
 
 
     // Get product by ID
-    @GetMapping("/products/id/{id}")
+    @GetMapping("/products/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
-    }
-    
-    
-    @GetMapping("/products/name/{productName}")
-    public ResponseEntity<ProductResponseDTO> getProductByName(@PathVariable String productName) {
-    	return ResponseEntity.ok(productService.getProductByName(productName));
     }
     
     @GetMapping("/products/all")
     public List<ProductResponseDTO> getAllProducts() {
     	return productService.getAllProducts();
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/products/update/{id}") 
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
-        ProductResponseDTO products = productService.updateProduct(id, product);
-    	return ResponseEntity.ok(products);    	
-    }
-    
-    @PostMapping("/products/decrease")
-    public void decreaseProductsCount(@RequestBody List<OrderProduct> orderedItems) {
-    	productService.decreaseProductsCount(orderedItems);
-    	
-    }
-    
-    @GetMapping("/products/restock")
-    public List<Product> getRestockProducts() {
-    	return productService.getRestockProducts();
-    	
-    }
-    
-    @PostMapping("/products/update/{productId}")
-    public void updateProduct(@PathVariable Long productId,@RequestBody ProductQuantity productQuantity) {
-    	productService.updateProduct(productQuantity,productId);
-    }
-    
 }
 

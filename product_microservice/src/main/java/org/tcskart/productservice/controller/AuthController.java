@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/product")
 public class AuthController {
 
     private static final String SECRET_KEY = "mySecretKey123456789012345678901234567890"; // must match filter
