@@ -67,18 +67,19 @@ public class UserService {
 	}
 
 	public ResponseEntity<Object> authUser(User validationRequest) {
-		Optional<User> authenticatedUser=userRepository.findByUsernameAndPassword(validationRequest.getUsername()
-				,validationRequest.getPassword());
-		
-		if(authenticatedUser.isEmpty()){
-			return new ResponseEntity<Object>("Wrong Cerdentials",HttpStatus.BAD_REQUEST);
+		User authenticatedUser=userRepository.findByUsername(validationRequest.getUsername());
+		if(authenticatedUser!=null) {
+			if(bCryptPasswordEncoder.matches(validationRequest.getPassword(), authenticatedUser.getPassword())) {
+				String token=tokenGenerator.generateToken(
+						authenticatedUser.getId()
+						,authenticatedUser.getUsername()
+						,authenticatedUser.getRole());
+				return new ResponseEntity<Object>("Bearer "+token,HttpStatus.OK);
+			}
+
 		}
-		
-		String token=tokenGenerator.generateToken(
-   			    authenticatedUser.get().getId()
-   			   ,authenticatedUser.get().getUsername()
-   			   ,authenticatedUser.get().getRole());
-		return new ResponseEntity<Object>("Bearer "+token,HttpStatus.OK);
+
+			return new ResponseEntity<Object>("Wrong Cerdentials",HttpStatus.BAD_REQUEST);
 		
 	}
 	
