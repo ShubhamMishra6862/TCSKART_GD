@@ -1,7 +1,10 @@
 package org.tcskart.productservice.dto;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
 import java.util.List;
+=======
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -27,9 +30,13 @@ public class ProductRequestDTO {
 
     private String category;
 
+<<<<<<< HEAD
     private List<String> imageUrl;
     
     private List<String> pincodes;
+=======
+    private String imageUrl;
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
     // Getters and Setters
 

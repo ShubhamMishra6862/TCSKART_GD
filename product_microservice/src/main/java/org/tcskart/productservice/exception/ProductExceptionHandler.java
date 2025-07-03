@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ProductExceptionHandler {
+<<<<<<< HEAD
 	 @ExceptionHandler(ProductNotFoundException.class)
+=======
+
+	  @ExceptionHandler(ProductNotFoundException.class)
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 	    public ResponseEntity<Map<String, Object>> handleProductNotFound(ProductNotFoundException ex) {
 	        Map<String, Object> body = new HashMap<>();
 	        body.put("timestamp", LocalDateTime.now());
@@ -27,6 +32,7 @@ public class ProductExceptionHandler {
 	        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	    
+<<<<<<< HEAD
 	    
 	    @ExceptionHandler(InvalidImageFormatException.class)
 	    public ResponseEntity<String> handleImageFormat(InvalidImageFormatException  ex) {
@@ -34,6 +40,8 @@ public class ProductExceptionHandler {
 	    }
 
 
+=======
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 	    @ExceptionHandler(DuplicateProductException.class)
 	    public ResponseEntity<String> handleDuplicateProduct(DuplicateProductException ex) {
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());

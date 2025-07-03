@@ -1,20 +1,30 @@
 package org.tcskart.productservice.bean;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+<<<<<<< HEAD
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+=======
+import jakarta.persistence.Column;
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+<<<<<<< HEAD
 import jakarta.persistence.JoinColumn;
+=======
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,10 +53,14 @@ public class Product {
 
 	private String category;
 
+<<<<<<< HEAD
 	@ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
     private List<String> imageUrls = new ArrayList<>();
+=======
+	private String imageUrl;
+>>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 	
 	@OneToMany(mappedBy="product",fetch=FetchType.EAGER)
 	private List<Review> reviews;
