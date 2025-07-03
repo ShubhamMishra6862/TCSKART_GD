@@ -1,0 +1,107 @@
+package org.tcskart.productservice.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.tcskart.productservice.bean.Product;
+import org.tcskart.productservice.dto.ProductRequestDTO;
+import org.tcskart.productservice.dto.ProductResponseDTO;
+import org.tcskart.productservice.exception.ProductNotFoundException;
+import org.tcskart.productservice.repository.ProductRepository;
+import org.tcskart.productservice.exception.DuplicateProductException;
+
+
+@Service
+public class ProductService implements ProductServiceInterface {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Override
+    public ProductResponseDTO addProduct(ProductRequestDTO dto) {
+    	Optional<Product> existing = productRepository.findByName(dto.getName());
+    	 if (existing.isPresent()) {
+    	        throw new DuplicateProductException("Product with name '" + dto.getName() + "' already exists.");
+    	    }
+        Product product = new Product();
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setQuantity(dto.getQuantity());
+        product.setCategory(dto.getCategory());
+        product.setImageUrls(dto.getImageUrl());
+
+        Product saved = productRepository.save(product);
+
+        return mapToResponse(saved);
+    }
+
+    @Override
+    public List<ProductResponseDTO> getAllProducts(int page, int size, String category, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage;
+
+        if (category != null && search != null) {
+            productPage = productRepository.findByCategoryIgnoreCaseAndNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+                    category, search, search, pageable);
+        } else if (category != null) {
+            productPage = productRepository.findByCategoryIgnoreCase(category, pageable);
+        } else if (search != null) {
+            productPage = productRepository.searchByCategoryORKeyword(search, search, pageable);
+        } else {
+            productPage = productRepository.findAll(pageable);
+        }
+
+        return productPage.getContent()
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    private ProductResponseDTO mapToResponseDTO(Product product) {
+        return ProductResponseDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .category(product.getCategory())
+                .quantity(product.getQuantity())
+                .imageUrls(product.getImageUrls())
+                .build();
+    }
+
+
+    @Override
+    public ProductResponseDTO getProductById(Long id) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new  ProductNotFoundException("Product not found with id: " + id));
+        return mapToResponse(product);
+    }
+
+    private ProductResponseDTO mapToResponse(Product product) {
+        return new ProductResponseDTO(
+            product.getId(),
+            product.getName(),
+            product.getDescription(),
+            product.getPrice(),
+            product.getQuantity(),
+            product.getCategory(),
+            product.getImageUrl()
+        );
+    }
+    
+    @Override
+    public List<ProductResponseDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                       .map(this::mapToResponseDTO)
+                       .toList();
+    }
+}

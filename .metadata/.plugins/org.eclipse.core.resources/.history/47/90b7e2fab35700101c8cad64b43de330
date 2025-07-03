@@ -1,0 +1,12 @@
+package org.tcskart.cart.service;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.tcskart.cart.dto.ProductResponseDTO;
+
+@FeignClient(name = "product-microservice")  // If using Eureka
+public interface ProductClient {
+
+    @GetMapping("/api/v1.0/products/id/{id}")
+    ProductResponseDTO getProductById(@PathVariable("id") Long productId);
+}

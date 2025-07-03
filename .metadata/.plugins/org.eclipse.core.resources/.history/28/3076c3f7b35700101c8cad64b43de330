@@ -1,0 +1,8 @@
+package org.tcskart.cart.service;
+
+@FeignClient(name = "product-microservice")  // If using Eureka
+public interface ProductClient {
+
+    @GetMapping("/api/v1.0/products/id/{id}")
+    ProductDTO getProductById(@PathVariable("id") Long productId);
+}

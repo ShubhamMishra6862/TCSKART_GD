@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;CartDTO.java&apos; to &apos;order/src/main/java/org.tcskart.order.dto&apos;&#x0A;- Original project: &apos;cart_microservice&apos;&#x0A;- Destination element: &apos;order/src/main/java/org.tcskart.order.dto&apos;&#x0A;- Original element: &apos;org.tcskart.cart.bean.CartDTO.java&apos;" description="Copy compilation unit" destination="=order/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;org.tcskart.order.dto" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;org.tcskart.cart.bean{CartDTO.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1751520355824" units="1" version="1.0"/>
+</session>
