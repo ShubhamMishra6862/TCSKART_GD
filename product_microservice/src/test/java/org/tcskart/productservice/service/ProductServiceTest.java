@@ -1,9 +1,6 @@
 package org.tcskart.productservice.service;
 
-<<<<<<< HEAD
-=======
 import static org.hamcrest.CoreMatchers.any;
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
@@ -17,15 +14,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.tcskart.productservice.bean.Product;
 import org.tcskart.productservice.dto.ProductRequestDTO;
-<<<<<<< HEAD
 import org.tcskart.productservice.repository.ProductRepository;
 import org.tcskart.productservice.repository.RestockRepository;
-=======
 import org.tcskart.productservice.dto.ProductResponseDTO;
 import org.tcskart.productservice.repository.ProductRepository;
 import org.tcskart.productservice.repository.RestockRepository;
 import static org.junit.Assert.assertEquals;
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
 
 @ExtendWith(MockitoExtension.class)

@@ -5,6 +5,7 @@ import java.security.Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,7 +33,10 @@ public class SecurityConfiguration {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/users/login", "/users/register", "/products/**").permitAll()
+            .requestMatchers("/users/login", "/users/register").permitAll()
+            .requestMatchers(HttpMethod.GET, "/**").permitAll() // ✅ allow all GET
+            .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/**").permitAll()
             .anyRequest().authenticated()
         )
         .exceptionHandling()

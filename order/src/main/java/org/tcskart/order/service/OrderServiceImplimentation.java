@@ -11,7 +11,9 @@ import org.tcskart.order.beans.Order;
 import org.tcskart.order.beans.OrderItem;
 import org.tcskart.order.dto.CartDTO;
 import org.tcskart.order.dto.CartItemDTO;
+import org.tcskart.order.dto.OrderProduct;
 import org.tcskart.order.feinclient.CartClient;
+import org.tcskart.order.feinclient.ProductClient;
 import org.tcskart.order.repository.OrderItemRepository;
 import org.tcskart.order.repository.OrderRepository;
 
@@ -29,6 +31,9 @@ public class OrderServiceImplimentation implements OrderService{
 
 	@Autowired
 	private CartClient  cartClient;
+	
+	@Autowired
+	ProductClient productClient;
 
 	@Override
 	public List<OrderItem> getAllOrdersByUserId(Long userId) {
@@ -91,6 +96,7 @@ public class OrderServiceImplimentation implements OrderService{
 
 		// 3. Add all items and calculate total
 		long totalAmount = 0L;
+		 List<OrderProduct> productList = new ArrayList<>();
 
 		for (CartDTO cartItemDTO : cartItemList) {
 			OrderItem item = new OrderItem();
@@ -101,11 +107,19 @@ public class OrderServiceImplimentation implements OrderService{
 
 			totalAmount += cartItemDTO.getTotalPrice();
 			repoItem.save(item);
+			 productList.add(new OrderProduct(
+			            cartItemDTO.getProductId(),
+			            cartItemDTO.getQuantity()
+			        ));
+			
 		}
 
 		// 4. Update order with total amount
 		savedOrder.setTotalAmount(totalAmount);
-		return repo.save(savedOrder);
+		
+		Order newOrder= repo.save(savedOrder);
+		productClient.decreaseProducts(productList);
+		return newOrder;
 	}
 
 

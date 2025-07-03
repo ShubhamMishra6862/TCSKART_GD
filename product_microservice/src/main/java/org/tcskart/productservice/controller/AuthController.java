@@ -11,20 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-<<<<<<< HEAD
 @RequestMapping("/auth")
 public class AuthController {
 
 //    private static final String SECRET_KEY = "mySecretKey123456789012345678901234567890"; // must match filter
 	private static final String SECRET_KEY =	"F9m7XZ2o1GJg8kvlHtL5s2n9QwbEfnZ72XUOpdKsR3t5I8uGfa1y7QYpaFmzmwr3";
 	private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7; // 7 days
-=======
-@RequestMapping("/product")
-public class AuthController {
 
-    private static final String SECRET_KEY = "mySecretKey123456789012345678901234567890"; // must match filter
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7; // 7 days
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
     @PostMapping("/token")
     public Map<String, String> generateToken(@RequestBody Map<String, Object> payload) {
@@ -35,11 +28,8 @@ public class AuthController {
 
         String token = Jwts.builder()
                 .setSubject(email)
-<<<<<<< HEAD
                 .claim("role", roles)
-=======
                 .claim("roles", roles)
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)

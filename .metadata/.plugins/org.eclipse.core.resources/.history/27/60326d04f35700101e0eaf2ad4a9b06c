@@ -1,0 +1,8 @@
+package org.tcskart.order.feinclient;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "api-gateway-microservice", path="products")
+public interface ProductClient {
+
+}

@@ -1,0 +1,5 @@
+package org.tcskart.order.feinclient;
+
+public interface ProductClient {
+
+}

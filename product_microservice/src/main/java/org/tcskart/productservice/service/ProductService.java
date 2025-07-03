@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
 import org.springframework.transaction.annotation.Transactional;
 import org.tcskart.productservice.bean.Product;
 import org.tcskart.productservice.bean.ProductAvailability;
@@ -24,20 +23,17 @@ import org.tcskart.productservice.repository.ProductRepository;
 import org.tcskart.productservice.repository.RestockRepository;
 import org.tcskart.productservice.exception.DuplicateProductException;
 import org.tcskart.productservice.exception.InvalidImageFormatException;
-=======
 import org.tcskart.productservice.bean.Product;
 import org.tcskart.productservice.dto.ProductRequestDTO;
 import org.tcskart.productservice.dto.ProductResponseDTO;
 import org.tcskart.productservice.exception.ProductNotFoundException;
 import org.tcskart.productservice.repository.ProductRepository;
 import org.tcskart.productservice.exception.DuplicateProductException;
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
 
 @Service
 public class ProductService implements ProductServiceInterface {
 
-<<<<<<< HEAD
 	private ProductRepository productRepository;
     
 	private EmailService emailService;
@@ -52,10 +48,6 @@ public class ProductService implements ProductServiceInterface {
 		this.restockRepository = restockRepository;
 		this.availabilityRepo = productAvailabilityRepository;
 	}
-=======
-    @Autowired
-    private ProductRepository productRepository;
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 
     @Override
     public ProductResponseDTO addProduct(ProductRequestDTO dto) {
@@ -63,7 +55,6 @@ public class ProductService implements ProductServiceInterface {
     	 if (existing.isPresent()) {
     	        throw new DuplicateProductException("Product with name '" + dto.getName() + "' already exists.");
     	    }
-<<<<<<< HEAD
     	 if (dto.getImageUrl() != null) {
              for (String url : dto.getImageUrl()) {
                  if (!url.toLowerCase().endsWith(".jpg") && !url.toLowerCase().endsWith(".png")) {
@@ -73,15 +64,12 @@ public class ProductService implements ProductServiceInterface {
          }
     	 
     	
-=======
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
         Product product = new Product();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setQuantity(dto.getQuantity());
         product.setCategory(dto.getCategory());
-<<<<<<< HEAD
         product.setImageUrls(dto.getImageUrl());
 
         Product saved = productRepository.save(product);
@@ -94,12 +82,8 @@ public class ProductService implements ProductServiceInterface {
 	            availabilityRepo.save(availability);
 	        }
 	    }
-=======
-        product.setImageUrl(dto.getImageUrl());
 
-        Product saved = productRepository.save(product);
 
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
         return mapToResponse(saved);
     }
 
@@ -134,11 +118,7 @@ public class ProductService implements ProductServiceInterface {
                 .price(product.getPrice())
                 .category(product.getCategory())
                 .quantity(product.getQuantity())
-<<<<<<< HEAD
                 .imageUrl(product.getImageUrls())
-=======
-                .imageUrl(product.getImageUrl())
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
                 .build();
     }
 
@@ -158,11 +138,7 @@ public class ProductService implements ProductServiceInterface {
             product.getPrice(),
             product.getQuantity(),
             product.getCategory(),
-<<<<<<< HEAD
             product.getImageUrls()
-=======
-            product.getImageUrl()
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
         );
     }
     
@@ -173,7 +149,6 @@ public class ProductService implements ProductServiceInterface {
                        .map(this::mapToResponseDTO)
                        .toList();
     }
-<<<<<<< HEAD
 
     @Override
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto) {
@@ -285,6 +260,4 @@ public class ProductService implements ProductServiceInterface {
 	    return availabilityRepo.existsByProductIdAndPincode(productId, pincode);
 	}
 
-=======
->>>>>>> f727ad051dce19faee223c367541c9bfa24cdc32
 }

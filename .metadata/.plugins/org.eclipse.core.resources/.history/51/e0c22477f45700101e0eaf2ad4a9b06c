@@ -1,0 +1,15 @@
+package org.tcskart.order.dto;
+
+import lombok.Data;
+
+@Data
+public class OrderProduct {
+	
+	public OrderProduct(Long productId2, Integer quantity2, Long totalPrice) {
+		// TODO Auto-generated constructor stub
+	}
+	private Long productId;
+	private int quantity;
+	private int amount;
+	
+}
