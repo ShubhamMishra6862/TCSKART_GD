@@ -63,7 +63,6 @@ INDEX VERSION 1.134+/home/labuser/Downloads/ABC/TCSKART_GD-main/.metadata/.plugi
 2463597345.index
 1756796966.index
 921378283.index
-72093806.index
 105966147.index
 3149710803.index
 1279875356.index
