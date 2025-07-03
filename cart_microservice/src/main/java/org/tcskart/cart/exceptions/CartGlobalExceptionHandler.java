@@ -27,5 +27,9 @@ public class CartGlobalExceptionHandler {
 	public ResponseEntity<String> handleProductAlreadyInWishListException(ProductAlreadyInWishListException exception){
 		return new ResponseEntity<>("Product is already in wishlist", HttpStatus.OK);
 	}
+	@ExceptionHandler(ProductQuantityException.class)
+	public ResponseEntity<String> handleProductQuantityException(ProductQuantityException exception){
+		return new ResponseEntity<>("Sorry the desired quantity is not available ", HttpStatus.NOT_ACCEPTABLE);
+	}
 }
 

@@ -1,0 +1,15 @@
+package org.tcskart.order.feinclient;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.tcskart.order.dto.CartDTO;
+import org.tcskart.order.dto.CartItemDTO;
+
+import java.util.List;
+@FeignClient(name = "api-gateway-microservice", path = "/carts")
+public interface CartClient {
+	@PostMapping("/{userId}/placeorder")
+    List<CartDTO> getCartItemsByUserId(@PathVariable("userId") Long userId);
+}

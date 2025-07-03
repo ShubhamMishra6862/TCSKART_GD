@@ -14,7 +14,7 @@ import org.tcskart.order.service.OrderService;
 
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("/orders")
 public class OrderController {
 	
 	
@@ -23,20 +23,24 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	   
-	        @PostMapping("/place/{userId}")
-	        public void placeOrder(@PathVariable Long userId) {
-	            orderService.placeOrder(userId);
+	        @PostMapping("/place")
+	        public void placeOrder() {
+				long userId = 1;
+
+				orderService.placeOrder(userId);
 	        }
 	        
 
-	        @GetMapping("/user/{userId}")
-	        public List<OrderItem> getOrdersByUserId(@PathVariable Long userId) {
+	        @GetMapping("/all")
+	        public List<OrderItem> getOrdersByUserId() {
+				long userId = 1;
 	            return orderService.getAllOrdersByUserId(userId); 
 	        }
 	        
 	        
-	        @GetMapping("/status/{userId}")
-	        public List<String> getOrderStatusByUser(@PathVariable Long userId) {
+	        @GetMapping("/status")
+	        public List<String> getOrderStatusByUser() {
+				long userId = 1;
 	            return orderService.trackOrderStatus(userId);
 	        }
 

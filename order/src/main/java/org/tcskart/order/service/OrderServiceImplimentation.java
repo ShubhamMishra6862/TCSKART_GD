@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tcskart.order.beans.Order;
 import org.tcskart.order.beans.OrderItem;
+import org.tcskart.order.dto.CartDTO;
 import org.tcskart.order.dto.CartItemDTO;
+import org.tcskart.order.feinclient.CartClient;
 import org.tcskart.order.repository.OrderItemRepository;
 import org.tcskart.order.repository.OrderRepository;
 
@@ -24,6 +26,9 @@ public class OrderServiceImplimentation implements OrderService{
 	
 	@Autowired
 	EmailService eservice;
+
+	@Autowired
+	private CartClient  cartClient;
 
 	@Override
 	public List<OrderItem> getAllOrdersByUserId(Long userId) {
@@ -65,44 +70,46 @@ public class OrderServiceImplimentation implements OrderService{
 	    return statusList;
 	}
 
-	
+
 	@Override
 	public Order placeOrder(Long userId) {
-		
-	    List<CartItemDTO> cartItemList = new ArrayList<>();
-	    cartItemList.add(new CartItemDTO(29, 29, 40000));
-	    cartItemList.add(new CartItemDTO(68, 150, 4900));
-	    cartItemList.add(new CartItemDTO(38, 50, 1780));
-	    
-	    Order savedOrder = null;
+		// 1. Fetch cart items from cart service using Feign
+		List<CartDTO> cartItemList = cartClient.getCartItemsByUserId(userId);
+        System.out.println(cartItemList.size());
+		if (cartItemList == null || cartItemList.isEmpty()) {
+			throw new RuntimeException("Cart is empty for user ID: " + userId);
+		}
 
-	    for (CartItemDTO cartItemDTO : cartItemList) {
-	        Order order = new Order();
-	        int userid = 22;
-	        order.setUserId(userId);
-	        order.setOrderstatus("PLACED");
-	        order.setPaymentMode("CashOnDelivery");
-	        order.setOrderDate(LocalDateTime.now());
+		// 2. Create a new order
+		Order order = new Order();
+		order.setUserId(userId);
+		order.setOrderstatus("PLACED");
+		order.setPaymentMode("CashOnDelivery");
+		order.setOrderDate(LocalDateTime.now());
+		order.setTotalAmount(0L); // initially 0
+		Order savedOrder = repo.save(order);
 
-	        savedOrder = repo.save(order);
+		// 3. Add all items and calculate total
+		long totalAmount = 0L;
 
-	        OrderItem item = new OrderItem();
-	        item.setProductId(cartItemDTO.getProductId());
-	        item.setQuantity(cartItemDTO.getQuantity());
-	        item.setAmount(cartItemDTO.getAmount());
-	        item.setOrder(savedOrder); // 🔁 now each item gets its own order
-	        repoItem.save(item);
+		for (CartDTO cartItemDTO : cartItemList) {
+			OrderItem item = new OrderItem();
+			item.setProductId(cartItemDTO.getProductId());
+			item.setQuantity(cartItemDTO.getQuantity());
+			item.setAmount(cartItemDTO.getTotalPrice());
+			item.setOrder(savedOrder);
 
-	        savedOrder.setTotalAmount(cartItemDTO.getAmount().longValue());
-	        repo.save(savedOrder); // update total
-	    }
+			totalAmount += cartItemDTO.getTotalPrice();
+			repoItem.save(item);
+		}
 
-	    eservice.sendSimpleEmail("nandanp016@gmail.com", "Orders placed successfully", "Your orders have been placed");
+		// 4. Update order with total amount
+		savedOrder.setTotalAmount(totalAmount);
 		return repo.save(savedOrder);
-	  
 	}
 
-	
+
+
 
 }
 

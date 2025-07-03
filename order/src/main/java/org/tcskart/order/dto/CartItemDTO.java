@@ -6,15 +6,16 @@ import lombok.Data;
 @Data
 public class CartItemDTO {
 
-	    private Integer productId;
+	    private Long productId;
 	    private Integer quantity;
-	    private Integer amount;
-		public CartItemDTO(Integer productId, Integer quantity, Integer amount) {
-//			super();
-			this.productId = productId;
-			this.quantity = quantity;
-			this.amount = amount;
-		}
+	    private Long amount;
+//		private
+//		public CartItemDTO(Integer productId, Integer quantity, Integer amount) {
+////			super();
+//			this.productId = productId;
+//			this.quantity = quantity;
+//			this.amount = amount;
+//		}
 	}
 
 

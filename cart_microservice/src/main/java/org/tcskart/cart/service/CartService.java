@@ -13,15 +13,22 @@ import org.tcskart.cart.bean.CartWishlist;
 import org.tcskart.cart.dao.CartItemRepository;
 import org.tcskart.cart.dao.CartRepository;
 import org.tcskart.cart.dao.WishlistRepository;
+import org.tcskart.cart.dto.ProductResponseDTO;
 import org.tcskart.cart.exceptions.ProductAlreadyInCartException;
 import org.tcskart.cart.exceptions.ProductAlreadyInWishListException;
 import org.tcskart.cart.exceptions.ProductNotInCartException;
+import org.tcskart.cart.exceptions.ProductQuantityException;
 import org.tcskart.cart.exceptions.UserNotFoundException;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class CartService {
+	
+	
+	@Autowired
+	private ProductClient productClient;
+	
 	@Autowired
 	private CartRepository cartRepo;
 	
@@ -66,25 +73,36 @@ public class CartService {
 		int quantity = item.getQuantity();		
 		Cart cart;
 		
+		ProductResponseDTO product = productClient.getProductById(item.getProductId());
+		System.out.println(product.getDescription());
+		
 		if(cartRepo.findByUserId(userId).isPresent()) {
 			cart = cartRepo.findByUserId(userId).get();
 		}else {
 			cart = createCart(userId);
 		}
 		
-		
 		Optional<CartItem> current = cartItemRepo.findByCart_UserIdAndProductId(userId, item.getProductId());
 		if(current.isPresent()) {
+			if(product.getQuantity()>item.getQuantity()) {
 			CartItem currentItem = current.get();
 			currentItem.setQuantity(quantity);
 			cartItemRepo.save(currentItem);
 			totalCartValue(userId);
 			throw new ProductAlreadyInCartException();
+			}else {
+				throw new ProductQuantityException();
+			}
 		}else {
+			if(product.getQuantity()>item.getQuantity()) {
 			item.setCart(cart);
 			cartItemRepo.save(item);
 			totalCartValue(userId);
 			return "Item added in Cart";
+		}else {
+			new ProductQuantityException();
+			return "";
+		}
 		}
 	}
 	
